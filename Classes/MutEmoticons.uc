@@ -12,9 +12,17 @@ var() config array<sSmileyMessageType> Smileys;
 
 Function PreBeginPlay()
 {
+	local string hudType;
 	Super.PreBeginPlay();
 	//Log( string( Level.Game ), 'MutEmoticons' );
 	//Log( Level.Game.HUDType, 'MutEmoticons' );
+
+	hudType = getTAMHUD( Level.Game );
+	if( hudType != "" )
+	{	
+		Level.Game.HUDType = hudType;
+		return;
+	}
 
 	if( Level.Game.IsA('ASGameInfo') )
 		Level.Game.HUDType = string( Class'SmileyHudAS' );
@@ -41,6 +49,18 @@ Function PreBeginPlay()
 	//Log( Level.Game.HUDType, 'MutEmoticons' );
 }
 
+function string getTAMHUD( GameInfo game )
+{
+	if( game.IsA('Freon') )
+		return string(class'SmileyHudFreon');
+	else if( game.IsA('TeamArenaMaster') )
+		return string(class'SmileyHudTAM');
+	else if( game.IsA('ArenaMaster') )
+		return string(class'SmileyHudAM');
+
+	return "";
+}
+
 Function bool CheckReplacement( Actor Other, byte b )
 {
 	local EmoticonsReplicationInfo RepInfo;
@@ -57,7 +77,7 @@ Function bool CheckReplacement( Actor Other, byte b )
 
 DefaultProperties
 {
-	FriendlyName="Emoticons V1B"
+	FriendlyName="Emoticons +TAM V1B"
 	bAddToServerPackages=True
 	Smileys(0)=(Event=">:(",Icon=Texture'MAD')
 	Smileys(1)=(Event=":(",Icon=Texture'11_FROWN')
