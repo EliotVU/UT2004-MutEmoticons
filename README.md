@@ -64,10 +64,10 @@ The mod was then ported over to work as a mutator for all supported gametypes, a
 
 The icons were borrowed from an unknown UT99 mod, if you happen to know, feel free to submit an issue :)
 
-## Derivative Works
+## Derivative works
 
-* Unreal Tournament 3 (UT3) [integrated with UT3X](https://github.com/xtremexp/UT3X) (the author claims copyright which is invalid)
-* Killing Floor (KF) Link?
+* Unreal Tournament 3 [integrated with UT3X](https://github.com/xtremexp/UT3X) (the author claims copyright which is invalid)
+* Killing Floor Link?
 
 ## See also
 
