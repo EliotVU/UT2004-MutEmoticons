@@ -46,7 +46,7 @@ Supported standard gametypes:
 * BombingRun (BR)
 * Capture the Flag (CTF)
 * DeathMatch (DM), Team DeathMatch (TDM)
-* Domination (DOM)
+* Double Domination (DDOM)
 * Invasion (INV)
 * Last Man Standing (LMS)
 * Onslaught (ONS)
