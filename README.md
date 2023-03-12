@@ -13,6 +13,8 @@ For server admins, use: ```MutEmoticons.MutEmoticons```, ```MutEmoticons_V1B.Mut
 In the in-game chat, simply write one of the following text-based emoticons:
 
 > \>:( :( :) :p :d :D :| :/ :- B) xD
+>
+> ![emotes](https://user-images.githubusercontent.com/808593/224518850-488f00c1-94b5-4ef7-a5c9-a520d6dde736.png)
 
 ## Config
 
