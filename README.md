@@ -69,7 +69,7 @@ The icons were borrowed from an unknown UT99 mod, if you happen to know, feel fr
 ## Derivative works
 
 * Unreal Tournament 3 [integrated with UT3X](https://github.com/xtremexp/UT3X) (the author claims copyright which is invalid)
-* Killing Floor Link?
+* Killing Floor [Mut: Per Server Stats](https://forums.tripwireinteractive.com/index.php?threads/mut-per-server-stats.36898/) (by the original author Marco), [KFEmojiPack](https://github.com/InsultingPros/KFEmojiPack)
 
 ## See also
 
