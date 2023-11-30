@@ -1,54 +1,60 @@
-// Coded by Eliot.
-Class EmoticonsReplicationInfo Extends Info
-	DependsOn(MutEmoticons)
-	NotPlaceable;
+/* Copyright (c) 2007-2023 Eliot van Uytfanghe. All rights reserved. */
+class EmoticonsReplicationInfo extends ReplicationInfo
+	dependson(MutEmoticons)
+	notplaceable;
 
-var array<MutEmoticons.sSmileyMessageType> mySmileys;
-var MutEmoticons Master;
-var int i;
+/** Emoticons that have been replicated to the client. */
+var array<MutEmoticons.sSmileyMessageType> Smileys;
+var MutEmoticons Mutator;
+var transient int nextIndex;
 
-Replication
+replication
 {
-	reliable if( Role == ROLE_Authority )
+	reliable if (Role == ROLE_Authority)
 		ClientAddEmoticon;
 }
 
-// Send Smileys to client.
-Function Tick( float dt )
+simulated event PreBeginPlay()
 {
-	if( Owner == None )
-	{
+    if (Level.NetMode != NM_DedicatedServer) {
+        Class'MutEmoticons'.default.EmoticonsState = self;
+    }
+}
+
+// Send Smileys to client.
+event Tick(float deltaTime)
+{
+	if (Owner == none) {
 		Destroy();
 		return;
 	}
 
-	Super.Tick(dt);
-	if( i == Master.Smileys.Length )
+	if (nextIndex == Mutator.Smileys.Length) {
+        // bTearOff = true;
 		return;
+    }
 
-	ClientAddEmoticon( Master.Smileys[i].Event, string( Master.Smileys[i].Icon ), string( Master.Smileys[i].MatIcon ) );
-	i ++;
+	ClientAddEmoticon(Mutator.Smileys[nextIndex].Event, string(Mutator.Smileys[nextIndex].Icon), string(Mutator.Smileys[nextIndex].MatIcon));
+	nextIndex ++;
 }
 
 // Add a smiley on the client array.
-Simulated Function ClientAddEmoticon( string S, string ico, string matico )
+simulated function ClientAddEmoticon(string event, string icon, string matIcon)
 {
-	local int n;
+	local int i;
 
-	n = mySmileys.Length;
-	mySmileys.Length = n + 1;
-	mySmileys[n].Event = S;
-	mySmileys[n].Icon = Texture(DynamicLoadObject( ico, Class'Texture', True ));
+	i = Smileys.Length;
+	Smileys.Length = i + 1;
+	Smileys[i].Event = event;
+	Smileys[i].Icon = Texture(DynamicLoadObject(icon, Class'Texture', true));
 
 	// Not an icon then try if its an material icon.
-	if( mySmileys[n].Icon == None )
-		mySmileys[n].MatIcon = Material(DynamicLoadObject( matico, Class'Material', True ));
-//	Log( "Added Emoticon:"$S@n@ico, Name );
+	if (Smileys[i].Icon == none) {
+		Smileys[i].MatIcon = Material(DynamicLoadObject(matIcon, Class'Material', true));
+    }
 }
 
-DefaultProperties
+defaultproperties
 {
-	RemoteRole=Role_SimulatedProxy
-	bAlwaysRelevant=True
-	bSkipActorPropertyReplication=False
+    bOnlyRelevantToOwner=true
 }

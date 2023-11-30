@@ -6,7 +6,7 @@ Away with text-based emoticons! Pimp your game's text box with lovely emoticons!
 
 Drop the files in the root of your UT2004's installation. e.g. all files in ```/System/``` should go in the corresponding root folder i.e. ```/UT2004/System/```
 
-For server admins, use: ```MutEmoticons.MutEmoticons```, ```MutEmoticons_V1B.MutEmoticons```, or ```MutEmoticons_V1B_TAM_3141.MutEmoticons``` etc.
+For server admins, use: ```?Mutator=MutEmoticons_V2.MutEmoticons``` or ```ServerActors=MutEmoticons_V2.EmoticonsServerActor```.
 
 ## Usage
 
@@ -21,8 +21,7 @@ In the in-game chat, simply write one of the following text-based emoticons:
 The configuration file can be found at ```/System/MutEmoticons.ini``` and should contain the following content:
 
 ```ini
-; For V1B use [MutEmoticons_V1B.MutEmoticons], or [MutEmoticons_V1B_TAM_3141.MutEmoticons]
-[MutEmoticons.MutEmoticons]
+[MutEmoticons_V2.MutEmoticons]
 Smileys=(Event=">:(",Icon=Texture'MAD')
 Smileys=(Event=":(",Icon=Texture'11_FROWN')
 Smileys=(Event=":)",Icon=Texture'19_GREENLI2')
@@ -44,6 +43,7 @@ However, if you have configured your own emoticons that reside in another .utx p
 This mutator replaces the HUDClass in order to displace the text-based emoticons with their corresponding icon. Because of this, this may break non-standard gametypes or simply not work at all.
 
 Supported standard gametypes:
+
 * Assault (AS)
 * BombingRun (BR)
 * Capture the Flag (CTF)
@@ -55,6 +55,7 @@ Supported standard gametypes:
 
 Custom gametypes:
 > **Requires a customized version of this mutator**
+
 * Arena Master (AM), Team Arena Master (TAM)
 * Freon
 

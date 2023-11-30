@@ -1,64 +1,50 @@
-// Coded by Eliot.
-Class MutEmoticons Extends Mutator
-	Config(MutEmoticons);
+/* Copyright (c) 2007-2023 Eliot van Uytfanghe. All rights reserved. */
+class MutEmoticons extends LocalPatcher
+	config(MutEmoticons);
 
 struct sSmileyMessageType
 {
 	var string Event;
-	var texture Icon;
-	var material MatIcon;
+	var Texture Icon;
+	var Material MatIcon;
 };
 var() config array<sSmileyMessageType> Smileys;
 
-Function PreBeginPlay()
+// Can't use 'Replication'
+var transient EmoticonsReplicationInfo EmoticonsState;
+
+function ServerTraveling(string URL, bool bItems)
 {
-	Super.PreBeginPlay();
-	//Log( string( Level.Game ), 'MutEmoticons' );
-	//Log( Level.Game.HUDType, 'MutEmoticons' );
+    super.ServerTraveling(URL, bItems);
 
-	if( Level.Game.IsA('ASGameInfo') )
-		Level.Game.HUDType = string( Class'SmileyHudAS' );
-	else if( Level.Game.IsA('CTFGame') )
-		Level.Game.HUDType = string( Class'SmileyHudCTF' );
-	else if( Level.Game.IsA('ONSOnslaughtGame') )
-		Level.Game.HUDType = string( Class'SmileyHudONS' );
-	else if( Level.Game.IsA('xBombingRun') )
-		Level.Game.HUDType = string( Class'SmileyHudBR' );
-	else if( Level.Game.IsA('xDoubleDom') )
-		Level.Game.HUDType = string( Class'SmileyHudONS' );
-	else if( Level.Game.IsA('Invasion') )
-		Level.Game.HUDType = string( Class'SmileyHudINV' );
-	else if( Level.Game.IsA('xMutantGame') )
-		Level.Game.HUDType = string( Class'SmileyHudMUT' );
-	else if( Level.Game.IsA('xLastManStandingGame') )
-		Level.Game.HUDType = string( Class'SmileyHudLMS' );
-	else if( Level.Game.IsA('xTeamGame') )
-		Level.Game.HUDType = string( Class'SmileyHudTDM' );
-	else if( Level.Game.IsA('DeathMatch') )
-		Level.Game.HUDType = string( Class'SmileyHudDM' );
-
-	//Log( string( Level.Game ), 'MutEmoticons' );
-	//Log( Level.Game.HUDType, 'MutEmoticons' );
+    if (Role == ROLE_Authority) {
+        // Prevent memory leaks
+        default.EmoticonsState = none;
+    }
 }
 
-Function bool CheckReplacement( Actor Other, byte b )
+function bool CheckReplacement(Actor other, out byte bSuperRelevant)
 {
-	local EmoticonsReplicationInfo RepInfo;
-
-	if( Other.IsA('PlayerController') && !Other.IsA('MessagingSpectator') )
+	if (bool(PlayerController(other)) && bool(MessagingSpectator(other)) == false)
 	{
-		RepInfo = Spawn( Class'EmoticonsReplicationInfo', Other );
-		RepInfo.Master = Self;
-//		Log( "Replicating Smileys to"@Other.GetHumanReadableName(), Self.Name );
-		return True;
+		Spawn(Class'EmoticonsReplicationInfo', other).Mutator = self;
+		return true;
 	}
-	return Super.CheckReplacement(Other,b);
+
+	return super.CheckReplacement(other, bSuperRelevant);
 }
 
-DefaultProperties
+#exec obj load file="SmileSkins.utx" package=MutEmoticons
+
+defaultproperties
 {
-	FriendlyName="Emoticons V1B"
-	bAddToServerPackages=True
+	FriendlyName="Emoticons"
+	bAddToServerPackages=true
+
+    // LocalPatcherInteractionClass=Class'EmoticonsInteraction'
+    LocalPatches(0)=(Source=Function'Engine.HUD.DisplayMessages',Destination=Function'HUDProxy.DisplayMessagesProxy')
+    LocalPatches(1)=(Source=Function'Engine.HUD.DrawTypingPrompt',Destination=Function'HUDProxy.DrawTypingPromptProxy')
+    
 	Smileys(0)=(Event=">:(",Icon=Texture'MAD')
 	Smileys(1)=(Event=":(",Icon=Texture'11_FROWN')
 	Smileys(2)=(Event=":)",Icon=Texture'19_GREENLI2')
@@ -70,4 +56,7 @@ DefaultProperties
 	Smileys(8)=(Event=":-",Icon=Texture'18_REDFACE')
 	Smileys(9)=(Event="B)",Icon=Texture'COOL')
 	Smileys(10)=(Event="xD",Icon=Texture'SCREAM6')
+	// Smileys(11)=(Event="BAN",Icon=Texture'Ban')
+	// Smileys(12)=(Event="HM",Icon=Texture'HM')
+	// Smileys(13)=(Event="SPAM",Icon=Texture'SPAM')
 }
